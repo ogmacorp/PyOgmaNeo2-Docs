@@ -1,0 +1,623 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Hierarchy &#8212; PyOgmaNeo2  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Image Visible Layer Desciptor" href="imvisiblelayerdesc.html" />
+    <link rel="prev" title="Higher Layer Descriptor" href="higherlayerdesc.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="hierarchy">
+<h1>Hierarchy<a class="headerlink" href="#hierarchy" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyogmaneo.Hierarchy">
+<em class="property">class </em><code class="descclassname">pyogmaneo.</code><code class="descname">Hierarchy</code><a class="headerlink" href="#pyogmaneo.Hierarchy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The sparse predictive hierarchy (SPH). Can be thought of as the “agent” when used for reinforcement learning.</p>
+<dl class="function">
+<dt id="Hierarchy.__init__">
+<code class="descclassname">Hierarchy.</code><code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>cs</em>, <em>prog</em>, <em>inputSizes</em>, <em>inputTypes</em>, <em>firstLayerDesc</em>, <em>higherLayerDescs</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a hierarchy of given structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cs</strong> – (ComputeSystem) compute system to use</li>
+<li><strong>prog</strong> – (ComputeProgram) compute program containing the necessary kernels (e.g. from neoKernels.cl)</li>
+<li><strong>inputSizes</strong> – ([Int3]) list of input sizes. Defines the size of each input layer</li>
+<li><strong>inputTypes</strong> – <p>([int]) list of enums defining the type of each input layer. Must be the same size as inputSizes.
+Possible enums are:</p>
+<blockquote>
+<div>pyogmaneo._inputTypeNone - used solely as an input (no additional functionality)<p>pyogmaneo._inputTypePrediction - used as input and can also predict next timestep of input (t + 1)</p>
+<p>pyogmaneo._inputTypeAction - used as input and can also perform reinforcement learning (produces actions)</p>
+</div></blockquote>
+</li>
+<li><strong>firstLayerDesc</strong> – (FirstLayerDesc) A filled-out descriptor (FirstLayerDesc object) describing how the first layer in the hierarchy should look</li>
+<li><strong>higherLayerDescs</strong> – ([HigherLayerDesc]) A list of filled-out descriptors (HigherLayerDesc objects) describing how all the higher layers (all but first) in the hierarchy should look</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">Hierarchy.</code><code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>cs</em>, <em>prog</em>, <em>name</em><span class="sig-paren">)</span></dt>
+<dd><p>Initialize a hierarchy given a save file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cs</strong> – (ComputeSystem) compute system to use</li>
+<li><strong>prog</strong> – (ComputeProgram) compute program containing the necessary kernels (e.g. from neoKernels.cl)</li>
+<li><strong>name</strong> – (string) save file name</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.step">
+<code class="descclassname">Hierarchy.</code><code class="descname">step</code><span class="sig-paren">(</span><em>self</em>, <em>cs</em>, <em>inputCs</em>, <em>learnEnabled=True</em>, <em>reward=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a simulation step of the hierarchy. This will produce new predictions or actions if those are being used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cs</strong> – (ComputeSystem) compute system to use</li>
+<li><strong>inputCs</strong> – ([IntBuffer]) list of input integer buffers representing the CSDRs of the dimensions described in the initialization</li>
+<li><strong>learnEnabled</strong> – (boolean) whether or not to enable learning (if False, will only perform inference). Defaults to True</li>
+<li><strong>reward</strong> – (float32) reward signal, if action input layers (pyogmaneo._inputTypeAction) are present this will be used to update those to maximize reward. Defaults to 0.0</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.save">
+<code class="descclassname">Hierarchy.</code><code class="descname">save</code><span class="sig-paren">(</span><em>self</em>, <em>cs</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the hierarchy to a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cs</strong> – (ComputeSystem) compute system to use</li>
+<li><strong>name</strong> – (string) save file name</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getNumLayers">
+<code class="descclassname">Hierarchy.</code><code class="descname">getNumLayers</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getNumLayers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of layers (encoders) the hierarchy has. Will be equal to (len(higherLayerDescs) + 1)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(int32) number of layers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getPredictionCs">
+<code class="descclassname">Hierarchy.</code><code class="descname">getPredictionCs</code><span class="sig-paren">(</span><em>self</em>, <em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getPredictionCs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a prediction for a given input layer index</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>i</strong> – (int32) index of the input layer. Will error if input layer does not have type pyogmaneo._inputTypePrediction</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference internal" href="intbuffer.html#pyogmaneo.IntBuffer" title="pyogmaneo.IntBuffer">IntBuffer</a>) integer buffer containing predictions</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getActionCs">
+<code class="descclassname">Hierarchy.</code><code class="descname">getActionCs</code><span class="sig-paren">(</span><em>self</em>, <em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getActionCs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an action for a given input layer index</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>i</strong> – (int32) index of the input layer. Will error if input layer does not have type pyogmaneo._inputTypeAction</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference internal" href="intbuffer.html#pyogmaneo.IntBuffer" title="pyogmaneo.IntBuffer">IntBuffer</a>) integer buffer containing actions</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getUpdate">
+<code class="descclassname">Hierarchy.</code><code class="descname">getUpdate</code><span class="sig-paren">(</span><em>self</em>, <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether a given layer has updated (clocked) in the last timestep</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> – (int32) index of the layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(boolean) True if updated, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getHiddenCs">
+<code class="descclassname">Hierarchy.</code><code class="descname">getHiddenCs</code><span class="sig-paren">(</span><em>self</em>, <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getHiddenCs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the CSDR of the encoder of a certain layer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> – (int32) index of the layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference internal" href="intbuffer.html#pyogmaneo.IntBuffer" title="pyogmaneo.IntBuffer">IntBuffer</a>) integer buffer containing encoder hidden layer states</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getHiddenSize">
+<code class="descclassname">Hierarchy.</code><code class="descname">getHiddenSize</code><span class="sig-paren">(</span><em>self</em>, <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getHiddenSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the size of the encoder of a certain layer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> – (int32) index of the layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference internal" href="int3.html#pyogmaneo.Int3" title="pyogmaneo.Int3">Int3</a>) size of layer. Will always be equal to the size if was initialzed to</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getTicks">
+<code class="descclassname">Hierarchy.</code><code class="descname">getTicks</code><span class="sig-paren">(</span><em>self</em>, <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getTicks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current tick of a layer (clock value)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> – (int32) index of the layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(int32) tick value. Will always be less the value produced by Hierarchy.getTicksPerUpdate(l) Will always be 0 for the first layer (l = 0)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getTicksPerUpdate">
+<code class="descclassname">Hierarchy.</code><code class="descname">getTicksPerUpdate</code><span class="sig-paren">(</span><em>self</em>, <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getTicksPerUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of ticks required before a layer clocks. Typically 2</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> – (int32) index of the layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(int32) number of ticks. Will always be 1 for the first layer (l = 0)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getNumInputLayers">
+<code class="descclassname">Hierarchy.</code><code class="descname">getNumInputLayers</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getNumInputLayers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of input layers. Will never deviate from the length of inputSizes given during initialization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(int32) number of input layers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getNumPLayers">
+<code class="descclassname">Hierarchy.</code><code class="descname">getNumPLayers</code><span class="sig-paren">(</span><em>self</em>, <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getNumPLayers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of predictor (top down) sub-layers at a given layer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> – (int32) index of the layer. Must be greater than 0 as the first layer does not have regular predictors</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(int32) number of input layers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getNumSCVisibleLayers">
+<code class="descclassname">Hierarchy.</code><code class="descname">getNumSCVisibleLayers</code><span class="sig-paren">(</span><em>self</em>, <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getNumSCVisibleLayers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of visible (sub) layers of a sparse coder (SC), AKA encoder. This will be equal to Hierarchy.getTicksPerUpdate(l) for all l except for 0, where it will be equal to Hierarchy.getNumInputLayers()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> – (int32) index of the layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(int32) number of visible layers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.pLayerExists">
+<code class="descclassname">Hierarchy.</code><code class="descname">pLayerExists</code><span class="sig-paren">(</span><em>self</em>, <em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.pLayerExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether there is a predictor at the i-th input layer. This will be True if the inputTypes[i] == pyogmaneo._inputTypePrediction during initialization</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>i</strong> – (int32) index of the input layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(boolean) True if exists, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.aLayerExists">
+<code class="descclassname">Hierarchy.</code><code class="descname">aLayerExists</code><span class="sig-paren">(</span><em>self</em>, <em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.aLayerExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether there is a action layer at the i-th input layer. This will be True if the inputTypes[i] == pyogmaneo._inputTypeAction during initialization</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>i</strong> – (int32) index of the input layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(boolean) True if exists, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.setSCAlpha">
+<code class="descclassname">Hierarchy.</code><code class="descname">setSCAlpha</code><span class="sig-paren">(</span><em>self</em>, <em>l</em>, <em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.setSCAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the alpha (learning rate) of a sparse coder (SC) (AKA encoder)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>l</strong> – (int32) index of the layer</li>
+<li><strong>alpha</strong> – (float32) value to set</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getSCAlpha">
+<code class="descclassname">Hierarchy.</code><code class="descname">getSCAlpha</code><span class="sig-paren">(</span><em>self</em>, <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getSCAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the alpha (learning rate) of a sparse coder (SC) (AKA encoder)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> – (int32) index of the layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float32) alpha</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.setPAlpha">
+<code class="descclassname">Hierarchy.</code><code class="descname">setPAlpha</code><span class="sig-paren">(</span><em>self</em>, <em>l</em>, <em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.setPAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the alpha (learning rate) of a predictor (P) (AKA decoder)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>l</strong> – (int32) index of the layer. This function is used for predictors above the first layer, so l &gt; 0</li>
+<li><strong>alpha</strong> – (float32) value to set</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getPAlpha">
+<code class="descclassname">Hierarchy.</code><code class="descname">getPAlpha</code><span class="sig-paren">(</span><em>self</em>, <em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getPAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the alpha (learning rate) of a predictor (P) (AKA decoder)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> – (int32) index of the layer. This function is used for predictors above the first layer, so l &gt; 0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float32) alpha</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.setBPAlpha">
+<code class="descclassname">Hierarchy.</code><code class="descname">setBPAlpha</code><span class="sig-paren">(</span><em>self</em>, <em>i</em>, <em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.setBPAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the alpha (learning rate) of a predictor (P) (AKA decoder) at the bottom (B) of the hierarchy (input layer)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>i</strong> – (int32) index of the input layer</li>
+<li><strong>alpha</strong> – (float32) value to set</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getBPAlpha">
+<code class="descclassname">Hierarchy.</code><code class="descname">getBPAlpha</code><span class="sig-paren">(</span><em>self</em>, <em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getBPAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the alpha (learning rate) of a predictor (P) (AKA decoder) at the bottom (B) of the hierarchy (input layer)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>i</strong> – (int32) index of the input layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float32) alpha</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.setBAAlpha">
+<code class="descclassname">Hierarchy.</code><code class="descname">setBAAlpha</code><span class="sig-paren">(</span><em>self</em>, <em>i</em>, <em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.setBAAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the alpha (value learning rate) of an action layer (A) at the bottom (B) of the hierarchy (input layer)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>i</strong> – (int32) index of the input layer</li>
+<li><strong>alpha</strong> – (float32) value to set</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getBAAlpha">
+<code class="descclassname">Hierarchy.</code><code class="descname">getBAAlpha</code><span class="sig-paren">(</span><em>self</em>, <em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getBAAlpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the alpha (value learning rate) of an action layer (A) at the bottom (B) of the hierarchy (input layer)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>i</strong> – (int32) index of the input layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float32) alpha</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.setBABeta">
+<code class="descclassname">Hierarchy.</code><code class="descname">setBABeta</code><span class="sig-paren">(</span><em>self</em>, <em>i</em>, <em>beta</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.setBABeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the beta (action learning rate) of an action layer (A) at the bottom (B) of the hierarchy (input layer)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>i</strong> – (int32) index of the input layer</li>
+<li><strong>beta</strong> – (float32) value to set</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getBABeta">
+<code class="descclassname">Hierarchy.</code><code class="descname">getBABeta</code><span class="sig-paren">(</span><em>self</em>, <em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getBABeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the beta (action learning rate) of an action layer (A) at the bottom (B) of the hierarchy (input layer)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>i</strong> – (int32) index of the input layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float32) beta</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.setBAGamma">
+<code class="descclassname">Hierarchy.</code><code class="descname">setBAGamma</code><span class="sig-paren">(</span><em>self</em>, <em>i</em>, <em>gamma</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.setBAGamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the gamma (discount factor) of an action layer (A) at the bottom (B) of the hierarchy (input layer)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>i</strong> – (int32) index of the input layer</li>
+<li><strong>beta</strong> – (float32) value to set</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Hierarchy.getBAGamma">
+<code class="descclassname">Hierarchy.</code><code class="descname">getBAGamma</code><span class="sig-paren">(</span><em>self</em>, <em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#Hierarchy.getBAGamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the gamma (discount factor) of an action layer (A) at the bottom (B) of the hierarchy (input layer)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>i</strong> – (int32) index of the input layer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float32) gamma</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyOgmaNeo2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="int3.html">Int3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intbuffer.html">Int Buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="floatbuffer.html">Float Buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="computesystem.html">Compute System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="computeprogram.html">Compute Program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firstlayerdesc.html">First Layer Descriptor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="higherlayerdesc.html">Higher Layer Descriptor</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imvisiblelayerdesc.html">Image Visible Layer Desciptor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imageencoder.html">Image Encoder</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="higherlayerdesc.html" title="previous chapter">Higher Layer Descriptor</a></li>
+      <li>Next: <a href="imvisiblelayerdesc.html" title="next chapter">Image Visible Layer Desciptor</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Eric Laukien.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/hierarchy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

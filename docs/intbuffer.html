@@ -1,0 +1,220 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Int Buffer &#8212; PyOgmaNeo2  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Float Buffer" href="floatbuffer.html" />
+    <link rel="prev" title="Int3" href="int3.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="int-buffer">
+<h1>Int Buffer<a class="headerlink" href="#int-buffer" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyogmaneo.IntBuffer">
+<em class="property">class </em><code class="descclassname">pyogmaneo.</code><code class="descname">IntBuffer</code><a class="headerlink" href="#pyogmaneo.IntBuffer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A buffer of integers (int32). Used typically to hold CSDRs for transfering to and from the GPU/other device.</p>
+<dl class="function">
+<dt id="IntBuffer.__init__">
+<code class="descclassname">IntBuffer.</code><code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#IntBuffer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default initialize, does nothing</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">IntBuffer.</code><code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>cs</em>, <em>size</em><span class="sig-paren">)</span></dt>
+<dd><p>Create a buffer of a certain size (number of integers). Calls IntBuffer.create internally.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cs</strong> – (ComputeSystem) compute system to use</li>
+<li><strong>size</strong> – (int32) size of buffer (number of integers)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IntBuffer.create">
+<code class="descclassname">IntBuffer.</code><code class="descname">create</code><span class="sig-paren">(</span><em>self</em>, <em>cs</em>, <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#IntBuffer.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a buffer of a certain size (number of integers). Will override existing data if already has some.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cs</strong> – (ComputeSystem) compute system to use</li>
+<li><strong>size</strong> – (int32) size of buffer (number of integers)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IntBuffer.write">
+<code class="descclassname">IntBuffer.</code><code class="descname">write</code><span class="sig-paren">(</span><em>self</em>, <em>cs</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#IntBuffer.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write data to the integer buffer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cs</strong> – (ComputeSystem) compute system to use</li>
+<li><strong>data</strong> – ([int32]) list of integers to write. Must be the same size as the buffer was created with</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IntBuffer.read">
+<code class="descclassname">IntBuffer.</code><code class="descname">read</code><span class="sig-paren">(</span><em>self</em>, <em>cs</em><span class="sig-paren">)</span><a class="headerlink" href="#IntBuffer.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from the integer buffer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cs</strong> – (ComputeSystem) compute system to use</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">([int32]) list of integers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="IntBuffer.getSize">
+<code class="descclassname">IntBuffer.</code><code class="descname">getSize</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#IntBuffer.getSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the size of the buffer (number of integers)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(int32) size</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyOgmaNeo2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="int3.html">Int3</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Int Buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="floatbuffer.html">Float Buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="computesystem.html">Compute System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="computeprogram.html">Compute Program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firstlayerdesc.html">First Layer Descriptor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="higherlayerdesc.html">Higher Layer Descriptor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hierarchy.html">Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imvisiblelayerdesc.html">Image Visible Layer Desciptor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imageencoder.html">Image Encoder</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="int3.html" title="previous chapter">Int3</a></li>
+      <li>Next: <a href="floatbuffer.html" title="next chapter">Float Buffer</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Eric Laukien.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/intbuffer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
